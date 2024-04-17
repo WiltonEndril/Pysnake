@@ -1,22 +1,23 @@
 import curses
 
 def gameLoop(window):
-    window.addstr(f'Aperte alguma tecla:\n')
+    personagem = [10, 15]
+    window.addch(personagem[0], personagem[1], curses.ACS_DIAMOND)
     while True:
         window.timeout(1000)
         char = window.getch()
         window.cls()
         match char:
             case curses.keyUp:
-                window.addstr('Mover para cima')
+                personagem[0] -= 1 
             case curses.keyLeft:
-                window.addstr('Move para esquerda')
+                personagem[1] -= 1 
             case curses.keyDown:
-                window.addstr('Move para baixo')
+                personagem[0] += 1
             case curses.keyRight:
-                window.addstr('Move para direita')
-            case _:
-                window.addstr('Não mover')
-
+                personagem[1] += 1 
+            case _: #não apertou a tecla ou n apertou a tecla correta.
+                pass
+        window.addch(personagem[0], personagem[1], curses.ACS_DIAMOND)
 if __name__ == '__main__':
     curses.wrapper(gameLoop)
