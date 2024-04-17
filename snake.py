@@ -112,7 +112,7 @@ def movePg(pg, direction):
             case curses.KEY_UP:
                 pg[0] -= 1 
             case curses.KEY_LEFT:
-                return currentDirection == curses.Key_DOWN 
+                pg[1] -= 1
             case curses.KEY_DOWN:
                 pg[0] += 1
             case curses.KEY_RIGHT:
