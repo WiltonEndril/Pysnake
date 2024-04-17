@@ -24,7 +24,7 @@ def gameLoop(window):
             return
         curretDirection = direction
 
-def snakeHitBorder(Snake, window):
+def snakeHitBorder(snake, window):
      head = snake[0]
      return snakeHitBorder(pg=head, window=window)
 
