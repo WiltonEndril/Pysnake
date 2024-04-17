@@ -3,26 +3,44 @@ import curses
 def gameLoop(window):
     #setup incial
     curses.curs_set(0)
-    personagem = [10, 15]
+    snake = [
+        [10, 15],
+        [9, 15],
+        [8, 15],
+        [7, 15],
+        [6, 15],
+    ]
+
     curretDirection = curses.KEY_DOWN
 
     while True:
         drawScreen(window=window)
-        drawPg(pg=personagem, window=window)
+        drawSnake(pg=snake, window=window)
         direction = getNewDirection(window=window, timeout=1000)
         if direction is None:
             direction = curretDirection
-            movePg(pg=personagem, direction=direction)
-        if hitBorder (pg=personagem, window=window):
+            moveSnake(pg=snake, direction=direction)
+        if hitBorder (pg=snake, window=window):
             return
         curretDirection = direction
+
+def snakeHitBorder(Snake, window):
+     head = snake[0]
+     return snakeHitBorder(pg=head, window=window)
 
 def drawScreen(window):
         window.cls()
         window.border(0)
 
-def drawPg(pg, window):
-        window.addch(pg[0], pg[1], curses.ACS_DIAMOND)
+def drawSnake(snake, window, char):
+    head = snake[0]
+    drawPg(pg=head, window=window, char="@")
+    body = snake[1:]
+    for bodyPart in body:
+         drawPg(pg=bodyPart, window=window, char="s")
+
+def drawPg(pg, window, char):
+        window.addch(pg[0], pg[1], char)
         
 def getNewDirection(window, timeout):
         window.timeout(timeout)
@@ -30,6 +48,13 @@ def getNewDirection(window, timeout):
         if direction in [curses.KEY_UP, curses.KEY_LEFT, curses.KEY_DOWN, curses.RIGHT]:
              return direction
         return
+
+def moveSnake(snake, direction):
+    head = snake[0].copy()
+    movePg(pg=head, direction=direction)
+    snake.insert(0, head)
+    snake.pop()
+
 
 def movePg(pg, direction):
         match direction:
