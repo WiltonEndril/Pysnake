@@ -32,7 +32,7 @@ def drawScreen(window):
         window.cls()
         window.border(0)
 
-def drawSnake(snake, window, char):
+def drawSnake(snake, window):
     head = snake[0]
     drawPg(pg=head, window=window, char="@")
     body = snake[1:]
