@@ -23,15 +23,30 @@ def gameLoop(window):
         direction = getNewDirection(window=window, timeout=1000)
         if direction is None:
             direction = curretDirection
+        if directionIsOpposite(direction=direction, curretDirection=curretDirection):
+             direction = curretDirection
         moveSnake(pg=snake, direction=direction, snakeAteFruit=snakeAteFruit)
         if hitBorder (pg=snake, window=window):
             return
+        if snakeHitItself(snake=snake):
+             return
         if snakeEatFruit(snake=snake, fruit=fruit):
              snakeAteFruit = True
              fruit = getNewFruit(window=window)
         else:
              snakeAteFruit = False
         curretDirection = direction
+
+def directionIsOpposite(direction, currentDirection):
+     match direction:
+            case curses.KEY_UP:
+                return currentDirection == curses.Key_DOWN 
+            case curses.KEY_LEFT:
+                return currentDirection == curses.Key_RIGHT 
+            case curses.KEY_DOWN:
+                return currentDirection == curses.Key_UP 
+            case curses.KEY_RIGHT:
+                return currentDirection == curses.Key_LEFT 
 
 def getNewFruit(window):
      height, width = window.getmaxyx()
@@ -43,6 +58,11 @@ def snakeHitBorder(snake, window):
 
 def snakeEatFruit(snake, fruit):
     return fruit in snake
+
+def snakeHitItself(snake):
+     head = snake[0]
+     body = snake[1:]
+     return head in body
 
 def drawScreen(window):
         window.cls()
@@ -78,7 +98,7 @@ def movePg(pg, direction):
             case curses.KEY_UP:
                 pg[0] -= 1 
             case curses.KEY_LEFT:
-                pg[1] -= 1 
+                return currentDirection == curses.Key_DOWN 
             case curses.KEY_DOWN:
                 pg[0] += 1
             case curses.KEY_RIGHT:
