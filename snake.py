@@ -4,15 +4,18 @@ def gameLoop(window):
     #setup incial
     curses.curs_set(0)
     personagem = [10, 15]
+    curretDirection = curses.KEY_DOWN
 
     while True:
         drawScreen(window=window)
         drawPg(pg=personagem, window=window)
         direction = getNewDirection(window=window, timeout=1000)
-        if direction is not None:
+        if direction is None:
+            direction = curretDirection
             movePg(pg=personagem, direction=direction)
         if hitBorder (pg=personagem, window=window):
             return
+        curretDirection = direction
 
 def drawScreen(window):
         window.cls()
